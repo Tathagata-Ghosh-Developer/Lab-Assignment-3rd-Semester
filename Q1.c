@@ -121,5 +121,3 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-
-// cd "/home/aditya/Desktop/DSA_Assgn3/Q1/" && gcc Q1.c -o Q1 && "/home/aditya/Desktop/DSA_Assgn3/Q1/"Q1
