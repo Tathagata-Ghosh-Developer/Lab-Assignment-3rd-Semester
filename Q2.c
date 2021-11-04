@@ -1,119 +1,70 @@
+//Assignment - 7 - Programming Lab
+/* Tathagata Ghosh - 2020ITB065 - HY*/
+
+/*Q2.     Design a set of
+functions (such as ADD, DIV, POWER (to do x^y), etc.) of your choice and store
+them in an array of function pointers. Write a program that will use these
+functions from the array, based on the user input. DO NOT USE
+switch-case/if-else to solve this problem.*/
+
 #include <stdio.h>
-#include <stdlib.h>
 
-typedef struct Node {
-    int data;
-    struct Node *next;
-    struct Node *nextLL;
-} LL;
-
-LL * createList(LL *head) {
-    head = NULL;
-    int t;
-    printf("Enter number of nodes : ");
-    scanf("%d", &t);
-    while(t--){
-        int val;
-        printf("Enter value : ");
-        scanf("%d", &val);
-        LL *new_node = (LL *)malloc(sizeof(LL));
-        new_node->data = val;
-        new_node->next = NULL;
-        if(head == NULL){
-            head = new_node;
-        }
-        else{
-            LL *current = head;
-            while(current->next != NULL){
-                current = current->next;
-            }
-            new_node->next = current->next;
-            current->next = new_node;
-        }
-    }
-    return head;
+double ADD(double x, double y) 
+{
+	return x + y;
 }
 
-void displayLLofLL(LL *ptr){
-    while(ptr->nextLL != NULL){
-        LL *current = ptr;
-        while(current->next != NULL){
-            printf("%d -> ", current->data);
-            current = current->next;
-        }
-        printf("%d", current->data);
-        printf("\n|\n");
-        ptr = ptr->nextLL;
-    }
-    LL *current = ptr;
-    while(current->next != NULL){
-        printf("%d -> ", current->data);
-        current = current->next;
-    }
-    printf("%d", current->data);
-    printf("\n");
+double DIV(double x, double y) 
+{
+	return x / y;
 }
 
-int main() {
+double POWER(double x, double y) 
+{
+	if (y == 0) 
+	{
+		return 1;
+	}
+	return x * POWER(x, y - 1);
+}
 
-    int n;
-    printf("Enter number of list : ");
-    scanf("%d", &n);
-    
-    LL *headList = (LL *)malloc(sizeof(LL));
-    headList = NULL;
-    for(int i=0; i<n; i++){
-        if(headList == NULL){
-            headList = createList(headList);
-            headList->nextLL = NULL;
-        } else{
-            LL *list = (LL *)malloc(sizeof(LL));
-            list = createList(list);
-            list->nextLL = NULL;
-            LL *current = headList;
-            while(current->nextLL != NULL){
-                current = current->nextLL;
-            }
-            list->nextLL = current->nextLL;
-            current->nextLL = list;
-        }
-        
-        printf("\n");
-    }
+double SUBTRACT(double x, double y) 
+{
+	return x - y;
+}
 
-    displayLLofLL(headList);
+double PRODUCT(double x, double y) 
+{
+	return x * y;
+}
 
-    printf("\n================================\n");
-    printf("Convert LL of LL into Singly LL");
-    printf("\n================================\n\n");
-    
-    LL *singlyLL = (LL *)malloc(sizeof(LL));
-    singlyLL = NULL;
-    while(headList != NULL){
-        LL *current = headList;
-        while(current != NULL){
-            LL *newNode = (LL *)malloc(sizeof(LL));
-            newNode->data = current->data;
-            newNode->next = NULL;
-            if(singlyLL == NULL){
-                singlyLL = newNode;
-            }
-            else{
-                LL *ptr = singlyLL;
-                while(ptr->next != NULL){
-                    ptr = ptr->next;
-                }
-                newNode->next = ptr->next;
-                ptr->next = newNode;
-            }
-            current = current->next;
-        }
-        headList = headList->nextLL;
-    }
+double (*ptr[5])(double x, double y);
 
-    while(singlyLL != NULL){
-        printf("%d ", singlyLL->data);
-        singlyLL = singlyLL->next;
-    }
-    printf("\n");
+int main() 
+{
+	ptr[0] = ADD;
+	ptr[1] = DIV;
+	ptr[2] = POWER;
+	ptr[3] = SUBTRACT;
+	ptr[4] = PRODUCT;
+	printf("-------------------------------------------------------------\n");
+	printf("Enter two numbers :\n");
+	
+	double x, y;
+	scanf("%lf%lf", &x, &y);
+	printf("-------------------------------------------------------------\n");
+	printf("Enter 0 to Add %.2lf and %.2lf\n", x, y);
+	printf("Enter 1 to Divide %.2lf by %.2lf\n", x, y);
+	printf("Enter 2 to calculate %.2lf to the power %.2lf\n", x, y);
+	printf("Enter 3 to subtract %.2lf from %.2lf\n", y, x);
+	printf("Enter 4 to multiply %.2lf and %.2lf\n", x, y);
+
+	int c;
+	scanf("%d", &c);
+	printf("-------------------------------------------------------------\n");
+	double result = ptr[c](x, y);
+	printf("Result = %.2lf\n", result);
+	printf("-------------------------------------------------------------\n");
+
+	return 0;
 }
